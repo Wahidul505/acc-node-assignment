@@ -58,13 +58,19 @@ module.exports.saveAUser = (req, res) => {
                     }
                     else {
                         const users = JSON.parse(data);
-                        users.push(newUser);
-                        fs.writeFile('userData.json', JSON.stringify(users), (error) => {
-                            error ?
-                                res.send({ success: false })
-                                :
-                                res.send({ success: true, message: "User Successfully created!" })
-                        })
+                        const exist = users.find(user => user.id === Number(id));
+                        if (!exist) {
+
+                            users.push(newUser);
+                            fs.writeFile('userData.json', JSON.stringify(users), (error) => {
+                                error ?
+                                    res.send({ success: false })
+                                    :
+                                    res.send({ success: true, message: "User Successfully created!" })
+                            })
+                        } else {
+                            res.send({ success: false, message: "User ID already exist" });
+                        }
                     }
                 })
             }
