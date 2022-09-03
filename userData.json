@@ -1,13 +1,5 @@
 [
     {
-        "id": 1,
-        "gender": "female",
-        "name": "Maureen Carr",
-        "contact": "121 502-39842",
-        "address": "Bern, Switzerland",
-        "photoUrl": "https://randomuser.me/api/portraits/women/47.jpg"
-    },
-    {
         "id": 2,
         "gender": "male",
         "name": "Javier Shaw",
@@ -73,10 +65,18 @@
     },
     {
         "id": 10,
-        "gender": "male",
-        "name": "Leon Fleming",
+        "gender": "female",
+        "name": "Cristiano Ronaldo",
         "contact": "3409  0523-532",
-        "address": "390 Lake view St",
+        "address": "something something",
         "photoUrl": "https://randomuser.me/api/portraits/men/83.jpg"
+    },
+    {
+        "id": 1,
+        "gender": "male",
+        "name": "Maureen Carr",
+        "contact": "121 502-39842",
+        "address": "Bern, Switzerland",
+        "photoUrl": "https://randomuser.me/api/portraits/women/47.jpg"
     }
 ]

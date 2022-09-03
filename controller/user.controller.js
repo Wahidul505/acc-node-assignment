@@ -59,6 +59,43 @@ module.exports.saveAUser = (req, res) => {
     else {
         res.send({ success: false, message: "Please provide all required properties to create a user" });
     }
+};
+
+// to update a particular user based on id
+module.exports.updateAUser = (req, res) => {
+    const { id, ...rest } = req.body;
+    fs.readFile("userData.json", (error, data) => {
+        if (error) {
+            res.send({ success: false })
+        }
+        else {
+            const users = JSON.parse(data);
+            const existUser = users.find(user => user.id === Number(id));
+            if (existUser) {
+                const restUsers = users.filter(user => user.id !== Number(id));
+                const updateEntries = Object.entries(rest);
+                for (const key in existUser) {
+                    updateEntries.forEach(entries => {
+                        if (key === entries[0]) {
+                            existUser[key] = entries[1];
+                        } else {
+                            return;
+                        }
+                    })
+                }
+                restUsers.push(existUser);
+                fs.writeFile('userData.json', JSON.stringify(restUsers), (error) => {
+                    error ?
+                        res.send({ success: false, message: "Fail to Update..." })
+                        :
+                        res.send({ success: true, message: "User Updated Successfully!" });
+                })
+            }
+            else {
+                res.send({ success: false, message: "User Not Found!" })
+            }
+        }
+    })
 
 
 }
