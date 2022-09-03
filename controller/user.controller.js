@@ -131,8 +131,10 @@ module.exports.updateMultipleUsers = (req, res) => {
             else {
                 const users = JSON.parse(data);
                 let restUsers;
+                let isExist = false;
                 for (const updatingUser of updatingUsers) {
-                    // const exist = users.find(user => user.id === updatingUser.id);
+                    const exist = users.find(user => user.id === updatingUser.id);
+                    exist && (isExist = true);
                     restUsers = users.filter(user => user.id !== updatingUser.id);
                     users.forEach(user => {
                         if (user.id === updatingUser.id) {
@@ -154,7 +156,11 @@ module.exports.updateMultipleUsers = (req, res) => {
                     error ?
                         res.send({ success: false, message: "Fail to Update Users..." })
                         :
-                        res.send({ success: true, message: "Users Updated Successfully!" });
+                        isExist ?
+                            res.send({ success: true, message: "Users Updated Successfully!" })
+                            :
+                            res.send({ success: false, message: "No User Found!" });
+
                 })
             }
         })
@@ -163,4 +169,36 @@ module.exports.updateMultipleUsers = (req, res) => {
         res.send({ success: false });
     }
 };
+
+// to delete a user 
+module.exports.deleteAUser = (req, res) => {
+    try {
+        const { id } = req.body;
+        fs.readFile("userData.json", (error, data) => {
+            if (error) {
+                res.send({ success: false })
+            }
+            else {
+                const users = JSON.parse(data);
+                const exist = users.find(user => user.id === Number(id));
+                if (exist) {
+                    const restUsers = users.filter(user => user.id !== Number(id));
+                    fs.writeFile("userData.json", JSON.stringify(restUsers), (error) => {
+                        error ?
+                            res.send({ success: false })
+                            :
+                            res.send({ success: true, message: "User Successfully Deleted!" });
+                    })
+                }
+                else {
+                    res.send({ success: false, message: "User Id Did not Matched!" });
+                }
+            }
+        })
+    }
+    catch {
+        res.send({ success: false })
+    }
+}
+
 
